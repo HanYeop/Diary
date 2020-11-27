@@ -13,30 +13,31 @@ class NoteAdapter(private val items: ArrayList<Note>) :
     lateinit var listener : OnNoteItemClickListener
 
     private var layoutType = 0
+    // 내용 중심인지 사진 중심인지 판단하기 위한 변수
 
     override fun getItemCount() = items.size
 
     fun getItem(position: Int): Note? {
         return items[position]
-    }
+    } // 아이템 반환
 
     fun addItem(item: Note?) {
         if (item != null) {
             items.add(item)
         }
-    }
+    } // 아이템 추가
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context)
             .inflate(R.layout.note_item,parent,false)
-        return ViewHolder(inflatedView,this,layoutType) // 보류
-    }
+        return ViewHolder(inflatedView,this,layoutType)
+    } // 새로 만들어준 뷰홀더 생성
 
     override fun onBindViewHolder(holder: NoteAdapter.ViewHolder, position: Int) {
         val item = items[position]
         holder.bind(item)
         holder.setLayoutType(layoutType)
-    }
+    } // 데이터 뷰홀더에 바인딩
 
     fun setOnItemClickListener(listener: OnNoteItemClickListener){
         this.listener = listener
@@ -47,7 +48,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
 
     fun switchLayout(position: Int){
         layoutType = position
-    }
+    } // 내용,사진 레이아웃 변경 함수
 
     class ViewHolder(itemView : View, listener: OnNoteItemClickListener, layoutType : Int) : RecyclerView.ViewHolder(itemView){
 
@@ -62,7 +63,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
         fun bind(item : Note){
             var mood = item.mood
             var moodIndex = Integer.parseInt(mood)
-            setMoodImage(moodIndex)
+            setMoodImage(moodIndex) // 기분 설정
 
             var picturePath = item.picture
             if(picturePath != null && !picturePath.equals("")){
@@ -76,19 +77,23 @@ class NoteAdapter(private val items: ArrayList<Note>) :
                 itemView.pictureImageView.visibility = View.GONE
                 itemView.pictureImageView.setImageResource(R.drawable.noimagefound)
             }
+            // 사진 설정
 
             var weather = item.weather
             var weatherIndex = Integer.parseInt(weather)
-            setWeatherImage(weatherIndex)
+            setWeatherImage(weatherIndex) // 날씨 설정
 
             itemView.contentsTextView.text = item.contents
             itemView.contentsTextView2.text = item.contents
+            // 텍스트 설정
 
             itemView.locationTextView.text = item.address
             itemView.locationTextView2.text = item.address
+            // 주소 설정
 
             itemView.dateTextView.text = item.createDataStr
             itemView.dateTextView2.text = item.createDataStr
+            // 날짜 설정
         }
 
         fun setMoodImage( moodIndex : Int){
@@ -118,7 +123,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
                     itemView.moodImageView2.setImageResource(R.drawable.smile3_48)
                 }
             }
-        }
+        } // moodIndex에 따른 기분 이미지 출력
 
         fun setWeatherImage(weatherIndex : Int){
             when(weatherIndex){
@@ -155,7 +160,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
                     itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_1)
                 }
             }
-        }
+        } // weatherIndex에 따른 날씨 이미지 출력
 
         fun setLayoutType(layoutType: Int){
             if( layoutType == 0){
@@ -166,7 +171,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
                 itemView.layout1.visibility = View.GONE
                 itemView.layout2.visibility = View.VISIBLE
             }
-        }
+        } // 레이아웃 타입에 따라 내용,사진 레이아웃 하나는 비활성화, 하나는 활성화
     }
 
 

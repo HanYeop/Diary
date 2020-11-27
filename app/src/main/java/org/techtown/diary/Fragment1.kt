@@ -27,8 +27,8 @@ class Fragment1 : Fragment() {
 
         if(context is OnTabItemSelectedListener){
             listener = context
-        }
-    } // is == 자바의 instanceof (자료형의 일치)
+        } // is == 자바의 instanceof (자료형의 일치)
+    } // 프래그먼트가 액티비티에 올라갈 때 호출
 
     override fun onDetach() {
         super.onDetach()
@@ -37,7 +37,7 @@ class Fragment1 : Fragment() {
             _context = null
             listener = null
         }
-    }
+    } // 액티비티에서 내려갈 때
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +55,12 @@ class Fragment1 : Fragment() {
     private fun initUI (rootView : ViewGroup){
         rootView.todayWriteButton.setOnClickListener{
             listener?.onTabSelected(1)
-        }
+        } // 클릭시 작성 레이아웃으로
+
         rootView.switchButton.setOnSwitchListener { position, tabText ->
             adapter.switchLayout(position)
             adapter.notifyDataSetChanged()
-        }
+        } // 내용,사진 위주의 레이아웃으로 바꿔주고 갱신
 
         adapter = NoteAdapter(arrayListOf<Note>())
 
@@ -106,8 +107,9 @@ class Fragment1 : Fragment() {
                 null,
                 "8월 5일"
             )
-        )
+        ) // 테스트용 임의 아이템 3개
         recyclerView.adapter = adapter
+        // 리싸이클러뷰에 어댑터 연결
 
         adapter.setOnItemClickListener(object : OnNoteItemClickListener {
             override fun onItemClick(holder: NoteAdapter.ViewHolder, view: View, position: Int) {
@@ -115,6 +117,6 @@ class Fragment1 : Fragment() {
 
                 Toast.makeText(context, "아이템 선택됨 : " + item?.contents, Toast.LENGTH_SHORT).show()
             }
-        })
+        }) // 아이템 선택 됐을때 호출할 함수
     }
 }
