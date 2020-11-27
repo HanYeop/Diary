@@ -4,25 +4,32 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.note_item.view.*
 
 class NoteAdapter(private val items: ArrayList<Note>) :
     RecyclerView.Adapter<NoteAdapter.ViewHolder>(), OnNoteItemClickListener{
 
-    var listener : OnNoteItemClickListener? = null
+    lateinit var listener : OnNoteItemClickListener
 
     private var layoutType = 0
 
     override fun getItemCount() = items.size
 
+    fun getItem(position: Int): Note? {
+        return items[position]
+    }
+
+    fun addItem(item: Note?) {
+        if (item != null) {
+            items.add(item)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context)
             .inflate(R.layout.note_item,parent,false)
-        return NoteAdapter.ViewHolder(inflatedView,this,layoutType)
+        return ViewHolder(inflatedView,this,layoutType) // 보류
     }
 
     override fun onBindViewHolder(holder: NoteAdapter.ViewHolder, position: Int) {
@@ -42,27 +49,7 @@ class NoteAdapter(private val items: ArrayList<Note>) :
         layoutType = position
     }
 
-    companion object class ViewHolder(itemView : View, listener: OnNoteItemClickListener, layoutType : Int) : RecyclerView.ViewHolder(itemView){
-        private var layout1 = itemView.findViewById<LinearLayout>(R.id.layout1)
-        private var layout2 = itemView.findViewById<LinearLayout>(R.id.layout2)
-
-        private var moodImageView = itemView.findViewById<ImageView>(R.id.moodImageView)
-        private var moodImageView2 = itemView.findViewById<ImageView>(R.id.moodImageView2)
-
-        private var pictureExistsImageView = itemView.findViewById<ImageView>(R.id.pictureExistsImageView)
-        private var pictureImageView = itemView.findViewById<ImageView>(R.id.pictureImageView)
-
-        private var weatherImageView = itemView.findViewById<ImageView>(R.id.weatherImageView)
-        private var weatherImageView2 = itemView.findViewById<ImageView>(R.id.weatherImageView2)
-
-        private var contentsTextView = itemView.findViewById<TextView>(R.id.contentsTextView)
-        private var contentsTextView2 = itemView.findViewById<TextView>(R.id.contentsTextView2)
-
-        private var locationTextView = itemView.findViewById<TextView>(R.id.locationTextView)
-        private var locationTextView2 = itemView.findViewById<TextView>(R.id.locationTextView2)
-
-        private var dateTextView = itemView.findViewById<TextView>(R.id.dateTextView)
-        private var dateTextView2 = itemView.findViewById<TextView>(R.id.dateTextView2)
+    class ViewHolder(itemView : View, listener: OnNoteItemClickListener, layoutType : Int) : RecyclerView.ViewHolder(itemView){
 
         init {
             itemView.setOnClickListener(View.OnClickListener {
@@ -79,46 +66,105 @@ class NoteAdapter(private val items: ArrayList<Note>) :
 
             var picturePath = item.picture
             if(picturePath != null && !picturePath.equals("")){
-                pictureExistsImageView.visibility = View.VISIBLE
-                pictureImageView.visibility = View.VISIBLE
-                pictureImageView.setImageURI(Uri.parse("file://$picturePath"))
+
+                itemView.pictureExistsImageView.visibility = View.VISIBLE
+                itemView.pictureImageView.visibility = View.VISIBLE
+                itemView.pictureImageView.setImageURI(Uri.parse("file://$picturePath"))
             }
             else{
-                pictureExistsImageView.visibility = View.GONE
-                pictureImageView.visibility = View.GONE
-                pictureImageView.setImageResource(R.drawable.noimagefound)
+                itemView.pictureExistsImageView.visibility = View.GONE
+                itemView.pictureImageView.visibility = View.GONE
+                itemView.pictureImageView.setImageResource(R.drawable.noimagefound)
             }
 
             var weather = item.weather
             var weatherIndex = Integer.parseInt(weather)
             setWeatherImage(weatherIndex)
 
-            contentsTextView.text = item.contents
-            contentsTextView2.text = item.contents
+            itemView.contentsTextView.text = item.contents
+            itemView.contentsTextView2.text = item.contents
 
-            locationTextView.text = item.address
-            locationTextView2.text = item.address
+            itemView.locationTextView.text = item.address
+            itemView.locationTextView2.text = item.address
 
-            dateTextView.text = item.createDataStr
-            dateTextView2.text = item.createDataStr
+            itemView.dateTextView.text = item.createDataStr
+            itemView.dateTextView2.text = item.createDataStr
         }
 
         fun setMoodImage( moodIndex : Int){
-
+            when(moodIndex){
+                0 -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile1_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile1_48)
+                }
+                1 -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile2_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile2_48)
+                }
+                2 -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile3_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile3_48)
+                }
+                3 -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile4_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile4_48)
+                }
+                4 -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile5_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile5_48)
+                }
+                else -> {
+                    itemView.moodImageView.setImageResource(R.drawable.smile3_48)
+                    itemView.moodImageView2.setImageResource(R.drawable.smile3_48)
+                }
+            }
         }
 
         fun setWeatherImage(weatherIndex : Int){
-
+            when(weatherIndex){
+                0 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_1)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_1)
+                }
+                1 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_2)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_2)
+                }
+                2 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_3)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_3)
+                }
+                3 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_4)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_4)
+                }
+                4 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_5)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_5)
+                }
+                5 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_6)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_6)
+                }
+                6 -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_7)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_7)
+                }
+                else -> {
+                    itemView.weatherImageView.setImageResource(R.drawable.weather_icon_1)
+                    itemView.weatherImageView2.setImageResource(R.drawable.weather_icon_1)
+                }
+            }
         }
 
         fun setLayoutType(layoutType: Int){
             if( layoutType == 0){
-                layout1.visibility = View.VISIBLE
-                layout2.visibility = View.GONE
+                itemView.layout1.visibility = View.VISIBLE
+                itemView.layout2.visibility = View.GONE
             }
             else if( layoutType == 1){
-                layout1.visibility = View.GONE
-                layout2.visibility = View.VISIBLE
+                itemView.layout1.visibility = View.GONE
+                itemView.layout2.visibility = View.VISIBLE
             }
         }
     }

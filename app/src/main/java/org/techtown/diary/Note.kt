@@ -1,15 +1,6 @@
 package org.techtown.diary
 
-class Note(_id : Int, weather : String, address : String, locationX : String, locationY : String,
-            contents : String, mood : String, picture : String, createDataStr : String) {
-    var _id = _id
-    var weather = weather
-    var address = address
-    var locationX = locationX
-    var locationY = locationY
-    var contents = contents
-    var mood = mood
-    var picture = picture
-    var createDataStr = createDataStr
+class Note(var _id : Int?, var weather : String?, var address : String?, var locationX : String?, var locationY : String?,
+            var contents : String?, var mood : String?, var picture : String?, var createDataStr : String?) {
 }
 
