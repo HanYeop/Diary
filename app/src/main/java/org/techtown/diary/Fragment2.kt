@@ -1,19 +1,67 @@
 package org.techtown.diary
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_2.view.*
 
 class Fragment2 : Fragment() {
+
+    private var _context : Context? = null
+    private var listener : OnTabItemSelectedListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        this._context = context
+
+        if(context is OnTabItemSelectedListener){
+            listener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        if(context!=null){
+            _context = null
+            listener = null
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_2, container, false)
+        var rootView = inflater.inflate(R.layout.fragment_2, container, false) as ViewGroup
+
+        initUI(rootView)
+
+        return rootView
+    }
+
+    private fun initUI(rootView : ViewGroup){
+        rootView.saveButton.setOnClickListener{
+            listener?.onTabSelected(0)
+        } // 저장 버튼 클릭시 목록으로
+
+        rootView.deleteButton.setOnClickListener {
+            listener?.onTabSelected(0)
+        } // 삭제 버튼 클릭시 목록으로
+
+        rootView.closeButton.setOnClickListener {
+            listener?.onTabSelected(0)
+        } // 닫기 버튼 클릭시 목록으로
+
+        rootView.sliderView.setOnSlideListener {
+            index -> Toast.makeText(context, "moodIndex changed to $index", Toast.LENGTH_SHORT).show()
+        } // 기분 선택되면 호출될 함수
+
+        rootView.sliderView.setInitialIndex(2) // 기본값을 중간으로
     }
 
 }

@@ -115,7 +115,7 @@ class Fragment1 : Fragment() {
             override fun onItemClick(holder: NoteAdapter.ViewHolder, view: View, position: Int) {
                 val item = adapter.getItem(position)
 
-                Toast.makeText(context, "아이템 선택됨 : " + item?.contents, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "아이템 선택됨 : ${item?.contents}" , Toast.LENGTH_SHORT).show()
             }
         }) // 아이템 선택 됐을때 호출할 함수
     }
