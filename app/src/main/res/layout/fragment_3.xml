@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="60dp"
     android:orientation="vertical"
-    tools:context=".`Fragment3 cotlen`">
+    tools:context=".Fragment3">
 
     <LinearLayout
         android:layout_width="match_parent"
