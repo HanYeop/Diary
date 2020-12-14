@@ -48,5 +48,13 @@ dependencies {
     // 시크바 연속x, 구간 선택
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     // 그래프
+    implementation 'com.android.volley:volley:1.1.0'
+    // 인터넷으로 필요한 정보 요청
+    implementation 'com.google.code.gson:gson:2.8.5'
+    // JSON포맷 자바 객체로 변환
+    implementation 'com.stanfy:gson-xml-java:0.1.7'
+    // xml포맷 자바 객체로 변환
+    implementation 'com.github.pedroSG94:AutoPermissions:1.0.3'
+    // 위험권한 자동으로 추가
 
 }

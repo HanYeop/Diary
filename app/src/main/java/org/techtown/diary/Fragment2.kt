@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_2.view.*
 
 class Fragment2 : Fragment() {
+    companion object{private final val TAG = "Fragment2"}
 
     private var _context : Context? = null
     private var listener : OnTabItemSelectedListener? = null
+    private var requestListener : OnRequestListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -22,6 +24,10 @@ class Fragment2 : Fragment() {
         if(context is OnTabItemSelectedListener){
             listener = context
         }
+
+        if(context is OnRequestListener){
+            requestListener = context
+        }
     }
 
     override fun onDetach() {
@@ -30,6 +36,7 @@ class Fragment2 : Fragment() {
         if(context!=null){
             _context = null
             listener = null
+            requestListener = null
         }
     }
 
@@ -40,6 +47,8 @@ class Fragment2 : Fragment() {
         var rootView = inflater.inflate(R.layout.fragment_2, container, false) as ViewGroup
 
         initUI(rootView)
+
+        requestListener?.onRequest("getCurrentLocation")
 
         return rootView
     }
