@@ -14,18 +14,16 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 public class MyApplication : Application(){
-
+    interface OnResponseListener {
+        fun processResponse(
+            requestCode: Int,
+            responseCode: Int,
+            response: String?
+        )
+    }
     companion object{
         private val TAG = "MyApplication"
         var requestQueue: RequestQueue? = null
-
-        interface OnResponseListener {
-            fun processResponse(
-                requestCode: Int,
-                responseCode: Int,
-                response: String?
-            )
-        }
 
         fun send(
             requestCode: Int,

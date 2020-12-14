@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), OnTabItemSelectedListener, OnRequestLi
             val address = addresses[0]
             currentAddress = address.locality + " " + address.subLocality
             val adminArea = address.adminArea
-            val country = println.countryName
+            val country = address.countryName
             println("Address : $country $adminArea $currentAddress")
             if (fragment2 != null) {
                 fragment2.setAddress(currentAddress)
@@ -175,8 +175,8 @@ class MainActivity : AppCompatActivity(), OnTabItemSelectedListener, OnRequestLi
     fun getCurrentWeather() {
         val gridMap =
             GridUtil.getGrid(currentLocation.latitude, currentLocation.longitude)!!
-        val gridX: Double? = gridMap["x"]
-        val gridY: Double? = gridMap["y"]
+        val gridX: Double = gridMap["x"] ?: error("")
+        val gridY: Double = gridMap["y"] ?: error("")
         println("x -> $gridX, y -> $gridY")
 
         sendLocalWeatherReq(gridX, gridY)
@@ -226,25 +226,25 @@ class MainActivity : AppCompatActivity(), OnTabItemSelectedListener, OnRequestLi
                     val tmDate: Date = AppConstants.dateFormat.parse(weather.header.tm)
                     val tmDateText: String = AppConstants.dateFormat2.format(tmDate)
                     println("기준 시간 : $tmDateText")
-                    for (i in 0 until weather.body.datas.size()) {
-                        val item: WeatherItem = weather.body.datas.get(i)
+                    for (i in 0 until weather.body?.datas?.size!!) {
+                        val item: WeatherItem = weather.body?.datas!![i]
                         println("#" + i + " 시간 : " + item.hour + "시, " + item.day + "일째")
                         println("  날씨 : " + item.wfKor)
                         println("  기온 : " + item.temp.toString() + " C")
                         println("  강수확률 : " + item.pop.toString() + "%")
                         println("debug 1 : " + Math.round(item.ws * 10).toInt())
 
-                        //println("debug 1 : " + (int)Math.round(item.ws * 10));
-                        val ws: Float = java.lang.Float.valueOf(
-                            Math.round(item.ws * 10) as Int.toString
-                            ()
-                        ) / 10.0f
-                        println("  풍속 : $ws m/s")
+//                        println("debug 1 : " + (int)Math.round(item.ws * 10));
+//                        val ws: Float = java.lang.Float.valueOf(
+//                            Math.round(item.ws * 10) as Int.toString
+//                            ()
+//                        ) / 10.0f
+//                        println("  풍속 : $ws m/s")
                     }
 
                     // set current weather
-                    val item: WeatherItem = weather.body.datas.get(0)
-                    currentWeather = item.wfKor
+                    val item: WeatherItem = weather.body?.datas!![0]
+                    currentWeather = item.wfKor!!
                     if (fragment2 != null) {
                         fragment2.setWeather(item.wfKor)
                     }
