@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), OnTabItemSelectedListener, OnRequestLi
                 }
             }
             true
-        } // 전달받은 Id에 따른 네비게이션뷰 프래그먼트 설정
+        } // 전달받은 Id에 따른 네비게이션뷰 프래그먼트 설정.
     }
 
     private fun changeFragment(fragment: Fragment){
